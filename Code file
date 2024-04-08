@@ -1,0 +1,109 @@
+# Lists to store class names and grades
+classes = []
+grades = []
+
+# Function to collect class names and grades (improved clarity)
+def collect_data():
+    num_classes = int(input("Enter the number of classes: "))
+
+    for i in range(num_classes):
+        class_name = input(f"Enter Class Name #{i+1}: ")
+        classes.append(class_name)
+
+        grade = input(f"Enter Your Grade For '{class_name}' (Letter Form): ")
+        grade = grade.upper()  # Convert grade to uppercase for consistency
+        grades.append(grade)
+
+# Function to calculate current GPA (enhanced)
+def calculate_gpa():
+    total_quality_points = 0
+    for grade in grades:
+        if grade == "A+":
+            total_quality_points += 4.0
+        elif grade == "A":
+            total_quality_points += 4.0
+        elif grade == "A-":
+            total_quality_points += 3.7
+        elif grade == "B+":
+            total_quality_points += 3.3
+        elif grade == "B":
+            total_quality_points += 3.0
+        elif grade == "B-":
+            total_quality_points += 2.7
+        elif grade == "C+":
+            total_quality_points += 2.3
+        elif grade == "C":
+            total_quality_points += 2.0
+        elif grade == "C-":
+            total_quality_points += 1.7
+        elif grade == "D":
+            total_quality_points += 1.0
+        else:
+            print(f"Invalid grade '{grade}' entered. Please enter a valid letter grade.")
+
+    gpa = total_quality_points / len(grades) if len(grades) > 0 else 0.0  # Handle empty grades list
+    return gpa
+
+# Function to calculate target grade needed (comprehensive and accurate)
+def calculate_target_grade(desired_gpa):
+    total_credits = 0  # Track total credits for weighted calculation
+    weighted_quality_points = 0  # Track weighted quality points
+
+    for i, grade in enumerate(grades):
+        credits = int(input(f"Enter the number of credits for '{classes[i]}': "))
+        total_credits += credits
+
+        if grade == "A+":
+            weighted_quality_points += credits * 4.0
+        elif grade == "A":
+            weighted_quality_points += credits * 4.0
+        elif grade == "A-":
+            weighted_quality_points += credits * 3.7
+        elif grade == "B+":
+            weighted_quality_points += credits * 3.3
+        elif grade == "B":
+            weighted_quality_points += credits * 3.0
+        elif grade == "B-":
+            weighted_quality_points += credits * 2.7
+        elif grade == "C+":
+            weighted_quality_points += credits * 2.3
+        elif grade == "C":
+            weighted_quality_points += credits * 2.0
+        elif grade == "C-":
+            weighted_quality_points += credits * 1.7
+        elif grade == "D":
+            weighted_quality_points += credits * 1.0
+        else:
+            print(f"Invalid grade '{grade}' entered. Please enter a valid letter grade.")
+
+    required_quality_points = desired_gpa * total_credits - weighted_quality_points
+
+    # Calculate average GPA needed for remaining courses (if applicable)
+    if total_credits > len(grades):
+        remaining_credits = total_credits - len(grades)
+        average_gpa_needed = (required_quality_points / remaining_credits)
+        print(f"You need an average GPA of {average_gpa_needed:.2f} for the remaining {remaining_credits} credits.")
+
+# Determine target grade for the next course (if applicable)
+    elif total_credits == len(grades):
+        target_grade = None
+        for grade_value, grade_letter in [(4.0, "A+"), (4.0, "A"), (3.7, "A-"), (3.3, "B+"),
+                                         (3.0, "B"), (2.7, "B-"), (2.3, "C+"), (2.0, "C"),
+                                         (1.7, "C-"), (1.0, "D")]:
+            if required_quality_points / total_credits >= grade_value:
+                target_grade = grade_letter
+                break
+
+        if target_grade:
+            print(f"To achieve a GPA of {desired_gpa}, you would need a '{target_grade}' in your next course.")
+        else:
+            print(f"Unfortunately, it is not possible to achieve a GPA of {desired_gpa} with only one more course.")
+
+
+collect_data()  # Collect class names and grades
+
+current_gpa = calculate_gpa()  # Calculate the current GPA
+print(f"Your current GPA is: {current_gpa:.2f}")
+
+desired_gpa = float(input("Enter your desired GPA: "))
+calculate_target_grade(desired_gpa)  # Calculate target grade or average GPA needed
